@@ -1,9 +1,8 @@
-/*
- *
+/* 
  * RemoteUnit for Multi Zone Wireless Thermostat
- *
+ * 
  * https://hackaday.io/project/19365-multi-zone-wireless-thermostat
- *
+ * 
 */
 
 #include <ESP8266WiFi.h>
@@ -13,17 +12,16 @@
 #include "Adafruit_MQTT_Client.h"
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP280.h>  // SDA pin: ESP8266 GPIO4 -> NodeMcu D2.
-                              // SCL pin: ESP8266 GPIO5 -> NodeMcu D3.
+                              // SCL pin: ESP8266 GPIO5 -> NodeMcu D3. 
 
 const uint16_t MAIN_LOOP_DELAY = 10000;
 
 /* PIN definitions */
-const int8_t FORCE_ON_LED = 9; // ESP8266 GPIO9  -> NodeMcu SD2
-const int8_t RELAY_PIN = 10;   // ESP8266 GPIO10 -> NodeMcu SD3
+const int8_t OUTPUT_PIN = 10;   // ESP8266 GPIO10 -> NodeMcu SD3
 
 /* WiFi */
-#define WLAN_SSID       "xxxx"
-#define WLAN_PASS       "xxxx"
+#define WLAN_SSID "****"
+#define WLAN_PASS "****"
 WiFiClient client;
 
 /* MQTT */
@@ -45,8 +43,8 @@ void MQTT_connect();
 
 void setup()
 {
-  pinMode(RELAY_PIN, OUTPUT);
-  digitalWrite(RELAY_PIN, LOW);
+  pinMode(OUTPUT_PIN, OUTPUT);
+  digitalWrite(OUTPUT_PIN, LOW);
 
   Serial.begin(115200);
   delay(10);
@@ -93,7 +91,7 @@ void loop()
   // Ensure the connection to the MQTT server is alive (this will make the first
   // connection and automatically reconnect when disconnected)
   MQTT_connect();
-
+  
   Adafruit_MQTT_Subscribe *subscription;
   while ((subscription = mqtt.readSubscription(1000)))
   {
@@ -102,12 +100,12 @@ void loop()
       if (strcmp((char *)boiler_onoff.lastread, "ON") == 0)
       {
         Serial.println("Turning boiler ON");
-        digitalWrite(RELAY_PIN, HIGH);
+        digitalWrite(OUTPUT_PIN, HIGH);
       }
       else
       {
         Serial.println("Turning boiler OFF");
-        digitalWrite(RELAY_PIN, LOW);
+        digitalWrite(OUTPUT_PIN, LOW);
       }
     }
   }
@@ -131,7 +129,7 @@ void loop()
   {
     Serial.println("OK");
   }
-
+  
   Serial.print("Publish Pressure: ");
   if (!pressure_topic.publish(pressure))
   {
