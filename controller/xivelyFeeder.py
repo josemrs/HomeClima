@@ -1,4 +1,6 @@
-# Updating a feed
+#! /usr/bin/env python2
+# -*- coding: utf-8 -*-
+
 import xively
 import paho.mqtt.client as mqtt
 import time
@@ -6,11 +8,21 @@ import sys
 
 from datetime import datetime
 
-MQTT_TOPICS = ['temperature/bedroom1', 'temperature/bedroom2', 'temperature/living', 'humidity/bedroom1', 'pressure/bedroom1', 'pressure/bedroom2', 'pressure/living']
+MQTT_TOPICS = [
+		'temperature/bedroom1',
+		'temperature/bedroom2',
+ 		'temperature/living',
+		'humidity/bedroom1',
+		'pressure/bedroom1',
+		'pressure/bedroom2',
+		'pressure/living',
+		'boiler/target_temp',
+		'boiler/onoff'
+	      ]
 FEED_INTERVAL = 5*60
 
-api = xively.XivelyAPIClient("3lEav1cMFVtWUloNGArcuKbGzFVpHi23BWuvCk67K3HIxk1Y")
-feed = api.feeds.get(1100648391)
+api = xively.XivelyAPIClient("xxxx")
+feed = api.feeds.get(xxxx)
 
 topicLastFeed = {}
 
