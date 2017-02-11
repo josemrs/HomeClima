@@ -1,0 +1,15 @@
+Number bedroom1_temperature "Bedroom 1 [%.1f °C]" (all) {mqtt="<[RPiTV:temperature/bedroom1:state:default]"}
+Number bedroom1_temperature2 "Bedroom 1 (BMP) [%.1f °C]" (all) {mqtt="<[RPiTV:temperature/bedroom1_bmp:state:default]"}
+Number bedroom2_temperature "Bedroom 2 [%.1f °C]" (all) {mqtt="<[RPiTV:temperature/bedroom2:state:default]"}
+Number living_temperature "Living room [%.1f °C]" (all) {mqtt="<[RPiTV:temperature/living:state:default]"}
+Number bedroom1_humidity "Bedroom 1 [%.1f %%]" (all) {mqtt="<[RPiTV:humidity/bedroom1:state:default]"}
+Number bedroom1_pressure "Bedroom 1 [%.1f hPa]" (all) {mqtt="<[RPiTV:pressure/bedroom1:state:default]"}
+Number bedroom2_pressure "Bedroom 2 [%.1f hPa]" (all) {mqtt="<[RPiTV:pressure/bedroom2:state:default]"}
+Number living_pressure "Living room [%.1f hPa]" (all) {mqtt="<[RPiTV:pressure/living:state:default]"}
+
+Number memory_used { channel="systeminfo:computer:RPiTV:memory#used" }
+
+DateTime date_t "Date and Time: [%1$tA %1$td.%1$tm.%1$tY %1$tT]" { channel="ntp:ntp:local:dateTime" }
+
+Switch boiler_onoff "Boiler ON/OFF" {mqtt=">[RPiTV:boiler/onoff:command:ON:ON],>[RPiTV:boiler/onoff:command:OFF:OFF],<[RPiTV:boiler/onoff:state:default]"}
+Number boiler_target_temp "Target temperature [%.1f °C]" (all) {mqtt=">[RPiTV:boiler/target_temp:command:*:default]"}

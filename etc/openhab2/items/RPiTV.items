@@ -1,0 +1,9 @@
+String Network_IP                   { channel="systeminfo:computer:RPiTV:network#ip" }
+
+Number Memory_Available              { channel="systeminfo:computer:RPiTV:memory#available" }
+Number Memory_Used                   { channel="systeminfo:computer:RPiTV:memory#used" }
+Number Memory_Total                  { channel="systeminfo:computer:RPiTV:memory#total" }
+Number Memory_Available_Percent      { channel="systeminfo:computer:RPiTV:memory#availablePercent" }
+
+String KodiTitle {channel="kodi:kodi:b1e100ea-ecc8-d83e-83ec-0a02e3ef6ed2:showtitle"}
+
