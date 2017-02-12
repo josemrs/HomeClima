@@ -11,5 +11,5 @@ Number memory_used { channel="systeminfo:computer:RPiTV:memory#used" }
 
 DateTime date_t "Date and Time: [%1$tA %1$td.%1$tm.%1$tY %1$tT]" { channel="ntp:ntp:local:dateTime" }
 
-Switch boiler_onoff "Boiler ON/OFF" {mqtt=">[RPiTV:boiler/onoff:command:ON:ON],>[RPiTV:boiler/onoff:command:OFF:OFF],<[RPiTV:boiler/onoff:state:default]"}
-Number boiler_target_temp "Target temperature [%.1f °C]" (all) {mqtt=">[RPiTV:boiler/target_temp:command:*:default]"}
+Switch boiler_onoff "Boiler ON/OFF" {mqtt=">[RPiTV:boiler/onoff:command:*:${command}],<[RPiTV:boiler/onoff:state:default", autoupdate="false"}
+Number boiler_target_temp "Target temperature [%.1f °C]" (all) {mqtt=">[RPiTV:boiler/target_temp:command:*:${command}],<[RPiTV:boiler/target_temp:state:default]", autoupdate="false"}

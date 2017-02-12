@@ -2,7 +2,7 @@ sitemap main1 label="Home Clima"
 {
     Frame label="" {
         Text item=date_t icon=calendar
-        Text item=kodi_title label="Now playing" icon="television"
+        Text item=Kodi_Title label="Now playing" icon="television"
     }
 
     Frame {
