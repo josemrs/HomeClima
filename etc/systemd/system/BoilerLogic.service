@@ -1,0 +1,12 @@
+[Unit]
+Description=Boiler Logic Control
+
+[Service]
+ExecStart=/opt/boilerLogic.py
+ExecStop=/bin/kill -9 $MAINPID
+KillMode=process
+KillSignal=SIGKILL
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

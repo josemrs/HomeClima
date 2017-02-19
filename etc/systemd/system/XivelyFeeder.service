@@ -1,0 +1,12 @@
+[Unit]
+Description=Xively Feeder
+
+[Service]
+ExecStart=/opt/xivelyFeeder.py
+ExecStop=/bin/kill -9 $MAINPID
+KillMode=process
+KillSignal=SIGKILL
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
