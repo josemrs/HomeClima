@@ -11,7 +11,7 @@
 #include "Adafruit_MQTT.h"
 #include "Adafruit_MQTT_Client.h"
 #include <Adafruit_Sensor.h>
-#include <Adafruit_BMP280.h>  // SDA pin: ESP8266 GPIO4 -> NodeMcu D2.
+#include <Adafruit_BME280.h>  // SDA pin: ESP8266 GPIO4 -> NodeMcu D2.
                               // SCL pin: ESP8266 GPIO5 -> NodeMcu D3. 
 
 const uint16_t MAIN_LOOP_DELAY = 10000;
@@ -30,12 +30,13 @@ WiFiClient client;
 Adafruit_MQTT_Client mqtt(&client, MQTT_SERVER, MQTT_PORT);
 
 /* MQTT Feeds */
-Adafruit_MQTT_Publish temperature_topic = Adafruit_MQTT_Publish(&mqtt, "temperature/bedroom2");
-Adafruit_MQTT_Publish pressure_topic = Adafruit_MQTT_Publish(&mqtt, "pressure/bedroom2");
+Adafruit_MQTT_Publish temperature_topic = Adafruit_MQTT_Publish(&mqtt, "temperature/living");
+Adafruit_MQTT_Publish pressure_topic = Adafruit_MQTT_Publish(&mqtt, "pressure/living");
+Adafruit_MQTT_Publish humidity_topic = Adafruit_MQTT_Publish(&mqtt, "humidity/living");
 Adafruit_MQTT_Subscribe boiler_onoff = Adafruit_MQTT_Subscribe(&mqtt, "boiler/onoff");
 
-/* BMP sensor via I2C */
-Adafruit_BMP280 bmp;
+/* BME sensor via I2C */
+Adafruit_BME280 bme;
 
 // Bug workaround for Arduino 1.6.6, it seems to need a function declaration
 // for some reason (only affects ESP8266, likely an arduino-builder bug).
@@ -50,18 +51,19 @@ void setup()
   delay(10);
 
   Serial.println("Sensor Test");
-  if (!bmp.begin(0x76))
+  if (!bme.begin(0x76))
   {
-    Serial.print("BMP280@0x76 not detected");
-    if (!bmp.begin(0x77))
+    Serial.println("BME280@0x76 not detected");
+    if (!bme.begin(0x77))
     {
-      Serial.print("BMP280@0x77 not detected");
+      Serial.println("BME280@0x77 not detected");
+      delay(1);
       while (1);
     }
   }
   else
   {
-    Serial.println("BMP280 ready.");
+    Serial.println("BME280 ready.");
   }
 
   // Connect to WiFi access point.
@@ -110,16 +112,21 @@ void loop()
     }
   }
 
-  float temperature = bmp.readTemperature();
+  float temperature = bme.readTemperature();
   Serial.print("Temperature: ");
   Serial.print(temperature);
   Serial.println(" °C");
 
-  float pressure = bmp.readPressure() / 100.0F;
+  float pressure = bme.readPressure() / 100.0F;
   Serial.print("Pressure:    ");
   Serial.print(pressure);
   Serial.println(" hPa");
 
+  float humidity = bme.readHumidity();
+  Serial.print("Humidity:    ");
+  Serial.print(humidity);
+  Serial.println(" %");
+  
   Serial.print("Publish Temperature: ");
   if (!temperature_topic.publish(temperature))
   {
@@ -129,7 +136,7 @@ void loop()
   {
     Serial.println("OK");
   }
-  
+
   Serial.print("Publish Pressure: ");
   if (!pressure_topic.publish(pressure))
   {
@@ -138,6 +145,16 @@ void loop()
   else
   {
     Serial.println("OK");
+  }
+
+  Serial.print("Publish Humidity: ");
+  if (! humidity_topic.publish(humidity))
+  {
+    Serial.println("Failed");
+  }
+  else
+  {
+    Serial.println("OK!");
   }
 
   delay(MAIN_LOOP_DELAY);

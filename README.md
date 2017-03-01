@@ -15,10 +15,12 @@ Replace the bimetallic thermostat with a few microcontroller based thermostats t
 * Adafruit_MQTT https://github.com/adafruit/Adafruit_MQTT_Library
 * Adafruit_Sensor https://github.com/adafruit/Adafruit_Sensor
 * Adafruit_BMP280 https://github.com/adafruit/Adafruit_BMP280_Library
+* Adafruit_BME280 https://github.com/adafruit/Adafruit_BME280_Library
 
 ## Folders and Files
 
 * RemoteUnit.c C code ready to use in the Arduino IDE to program the ESP8266
+  * Reset to tag last_bmp280 for code with BMP280 support
 * etc/openhab2 Contains my personal config (sitemap and items) for OpenHab2 (http://www.openhab.org/)
 * controller Contains the scripts for the controller unit (RPi in my case)
   * boilerLogic.py Subscribe to temperatures and publishes to boiler topic. Implements the logic to turn on/off the boiler depending on temperatures, time and target.
