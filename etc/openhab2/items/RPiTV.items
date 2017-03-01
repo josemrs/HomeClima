@@ -1,9 +1,11 @@
-String Network_IP                   { channel="systeminfo:computer:RPiTV:network#ip" }
+DateTime date_t "Date and Time: [%1$tA %1$td.%1$tm.%1$tY %1$tT]" <calendar> { channel="ntp:ntp:local:dateTime" }
 
-Number Memory_Available              { channel="systeminfo:computer:RPiTV:memory#available" }
-Number Memory_Used                   { channel="systeminfo:computer:RPiTV:memory#used" }
-Number Memory_Total                  { channel="systeminfo:computer:RPiTV:memory#total" }
-Number Memory_Available_Percent      { channel="systeminfo:computer:RPiTV:memory#availablePercent" }
+String network_ip "IP address" <ram> (system) { channel="systeminfo:computer:RPiTV:network#ip" }
 
-String Kodi_Title {channel="kodi:kodi:b1e100ea-ecc8-d83e-83ec-0a02e3ef6ed2:showtitle"}
+Number ram_total "Total RAM" <ram> (system) { channel="systeminfo:computer:RPiTV:memory#total" }
+Number ram_in_use "RAM in use" <ram> (system) { channel="systeminfo:computer:RPiTV:memory#used" }
+Number available_ram "Available RAM" <ram> (system) { channel="systeminfo:computer:RPiTV:memory#available" }
+Number available_ram_percent "Available RAM" (system) { channel="systeminfo:computer:RPiTV:memory#availablePercent" }
+
+String kodi_title "Now playing" <television> (system) {channel="kodi:kodi:b1e100ea-ecc8-d83e-83ec-0a02e3ef6ed2:showtitle"}
 
