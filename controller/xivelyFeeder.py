@@ -9,16 +9,19 @@ import sys
 from datetime import datetime
 
 MQTT_TOPICS = [
-		'temperature/bedroom1',
-		'temperature/bedroom2',
- 		'temperature/living',
-		'humidity/bedroom1',
-		'pressure/bedroom1',
-		'pressure/bedroom2',
-		'pressure/living',
-		'boiler/target_temp',
-		'boiler/onoff'
-	      ]
+                'temperature/bedroom1',
+                'temperature/bedroom2',
+                'temperature/living',
+                'humidity/bedroom1',
+                'humidity/bedroom2',
+                'humidity/living',
+                'pressure/bedroom1',
+                'pressure/bedroom2',
+                'pressure/living',
+                'boiler/target_temp',
+                'boiler/onoff'
+              ]
+
 FEED_INTERVAL = 5*60
 
 api = xively.XivelyAPIClient("xxxx")

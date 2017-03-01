@@ -14,10 +14,10 @@ NIGHT_SENSOR='temperature/bedroom2'
 BOILER_ONOFF='boiler/onoff'
 
 MQTT_TOPICS = [DAY_SENSOR, NIGHT_SENSOR, TARGET_TEMP_TOPIC]
-DAY_START_HOUR = 7
+DAY_START_HOUR = 8
 NIGHT_START_HOUR = 20
 
-HYSTERESIS = 1
+HYSTERESIS = 0.5
 
 target_temp = None
 day_sensor_temp = None
@@ -27,19 +27,33 @@ TURN_OFF = 1
 TURN_ON = -1
 NO_ACTION = 0
 
-def boilerLogic(min, current, max):
-	if current <= min:
-		print "The temperature is too low -> turning the boiler on (%.1f <= %.1f)" % (current, min)
-		client.publish(BOILER_ONOFF, payload='ON', qos=2, retain=True)
-		return TURN_ON 
-	elif current >= max:
-		print "The temperature is too high -> turning the boiler off (%.1f => %.1f)" % (current, max)
-		client.publish(BOILER_ONOFF, payload='OFF', qos=2, retain=True)
-		return TURN_OFF 
-	else:
-		print "The temperature is right (%.1f < %.1f < %.1f)" % (min, current, max)
+last_action = NO_ACTION
 
-	return NO_ACTION
+def boilerLogic(min, current, max):
+
+	if current <= min:
+		print "The temperature is too low (current:%.1f <= min:%.1f)" % (current, min)
+		current_action = TURN_ON
+	elif current >= max:
+		print "The temperature is too high (current:%.1f => max:%.1f)" % (current, max)
+		current_action = TURN_OFF
+	else:
+		print "The temperature is right (min:%.1f < current:%.1f < max:%.1f)" % (min, current, max)
+		current_action = NO_ACTION
+
+	global last_action
+	if last_action == current_action:
+		return current_action
+
+	if current_action == TURN_OFF:
+		print "Turning the boiler OFF"
+		client.publish(BOILER_ONOFF, payload='OFF', qos=2, retain=True)
+	elif current_action == TURN_ON:
+		print "Turning the boiler ON"
+		client.publish(BOILER_ONOFF, payload='ON', qos=2, retain=True)
+
+	last_action = current_action
+	return current_action
 
 
 # The callback for when the client receives a CONNACK response from the server.
