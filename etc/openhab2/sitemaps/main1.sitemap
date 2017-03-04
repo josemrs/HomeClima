@@ -2,35 +2,43 @@ sitemap main1 label="Home Clima"
 {
     Frame label="" {
         Text item=date_t
-        Text item=kodi_title
     }
 
     Frame label="Boiler" {
-	Switch item=boiler_onoff
-	Setpoint item=boiler_target_temp minValue=15 maxValue=25 step=0.5
+       Switch item=boiler_onoff
+       Setpoint item=day_target_temp minValue=15 maxValue=25 step=0.5
+       Setpoint item=night_target_temp minValue=15 maxValue=25 step=0.5
     }
 
     Frame label="Temperatures" {
-       Text item=bedroom1_temperature valuecolor=[>=22="red",>=21="orange",>18="green",<=18="blue"]
-       Text item=bedroom1_temperature2 valuecolor=[>=22="red",>=21="orange",>18="green",<=18="blue"]
-       Text item=bedroom2_temperature valuecolor=[>=22="red",>=21="orange",>18="green",<=18="blue"]
-       Text item=living_temperature valuecolor=[>=22="red",>=21="orange",>18="green",<=18="blue"]
+        Text item=bedroom1_temperature valuecolor=[>=23="red",>=22="orange",>19="green",<=18="blue"]
+        Text item=bedroom1_temperature2 valuecolor=[>=23="red",>=22="orange",>19="green",<=18="blue"]
+        Text item=bedroom2_temperature valuecolor=[>=23="red",>=22="orange",>19="green",<=18="blue"]
+        Text item=living_temperature valuecolor=[>=23="red",>=22="orange",>19="green",<=18="blue"]
     }
 
     Frame label="Humidities" {
-       Text item=bedroom1_humidity valuecolor=[>=60="blue",>=40="green",<40="brown"]
-       Text item=bedroom2_humidity valuecolor=[>=60="blue",>=40="green",<40="brown"]
-       Text item=living_humidity valuecolor=[>=60="blue",>=40="green",<40="brown"]
+        Text item=bedroom1_humidity valuecolor=[>=60="blue",>=40="green",<40="brown"]
+        Text item=bedroom2_humidity valuecolor=[>=60="blue",>=40="green",<40="brown"]
+        Text item=living_humidity valuecolor=[>=60="blue",>=40="green",<40="brown"]
     }
+
     Frame label="Pressures" {
-       Text item=bedroom1_pressure valuecolor=[>=1050="red",>=980="green",<980="blue"]
-       Text item=bedroom2_pressure valuecolor=[>=1050="red",>=980="green",<980="blue"]
-       Text item=living_pressure valuecolor=[>=1050="red",>=980="green",<980="blue"]
+        Text item=bedroom1_pressure valuecolor=[>=1050="red",>=980="green",<980="blue"]
+        Text item=bedroom2_pressure valuecolor=[>=1050="red",>=980="green",<980="blue"]
+        Text item=living_pressure valuecolor=[>=1050="red",>=980="green",<980="blue"]
     }
+
+    Frame label="All sensors" {
+        Group item=Temperatures
+        Group item=Humidities
+        Group item=Pressures
+    }
+
     Frame label="RPiTV System Status" {
-       Text item=network_ip
-       Text item=ram_total
-       Text item=available_ram
-       Text item=ram_in_use
+        Text item=network_ip
+        Text item=ram_total
+        Text item=available_ram
+        Text item=ram_in_use
     }
 }

@@ -1,20 +1,21 @@
-Group Temperatures
-Group Humidities
-Group Pressures
+Group Temperatures <temperature>
+Group Humidities <humidity>
+Group Pressures <pressure>
 Group Boiler
 
-Number bedroom1_temperature "Bedroom 1 [%.1f °C]" <temperature> (Temperatures) {mqtt="<[RPiTV:temperature/bedroom1:state:default]"}
-Number bedroom1_temperature2 "Bedroom 1 (BMP) [%.1f °C]" <temperature> (Temperatures) {mqtt="<[RPiTV:temperature/bedroom1_bmp:state:default]"}
-Number bedroom2_temperature "Bedroom 2 [%.1f °C]" <temperature> (Temperatures) {mqtt="<[RPiTV:temperature/bedroom2:state:default]"}
-Number living_temperature "Living room [%.1f °C]" <temperature> (Temperatures) {mqtt="<[RPiTV:temperature/living:state:default]"}
+Number bedroom1_temperature "Bedroom 1 [%.1f °C]" <temperature> (Temperatures) {mqtt="<[Broker:temperature/bedroom1:state:default]"}
+Number bedroom1_temperature2 "Bedroom 1 (BMP) [%.1f °C]" <temperature> (Temperatures) {mqtt="<[Broker:temperature/bedroom1_bmp:state:default]"}
+Number bedroom2_temperature "Bedroom 2 [%.1f °C]" <temperature> (Temperatures) {mqtt="<[Broker:temperature/bedroom2:state:default]"}
+Number living_temperature "Living room [%.1f °C]" <temperature> (Temperatures) {mqtt="<[Broker:temperature/living:state:default]"}
 
-Number bedroom1_humidity "Bedroom 2 [%.1f %%]" <humidity> (Humidities) {mqtt="<[RPiTV:humidity/bedroom1:state:default]"}
-Number bedroom2_humidity "Bedroom 1 [%.1f %%]" <humidity> (Humidities) {mqtt="<[RPiTV:humidity/bedroom2:state:default]"}
-Number living_humidity "Living [%.1f %%]" <humidity> (Humidities) {mqtt="<[RPiTV:humidity/living:state:default]"}
+Number bedroom1_humidity "Bedroom 2 [%.1f %%]" <humidity> (Humidities) {mqtt="<[Broker:humidity/bedroom1:state:default]"}
+Number bedroom2_humidity "Bedroom 1 [%.1f %%]" <humidity> (Humidities) {mqtt="<[Broker:humidity/bedroom2:state:default]"}
+Number living_humidity "Living [%.1f %%]" <humidity> (Humidities) {mqtt="<[Broker:humidity/living:state:default]"}
 
-Number bedroom1_pressure "Bedroom 1 [%.1f hPa]" <pressure> (Pressures) {mqtt="<[RPiTV:pressure/bedroom1:state:default]"}
-Number bedroom2_pressure "Bedroom 2 [%.1f hPa]" <pressure> (Pressures) {mqtt="<[RPiTV:pressure/bedroom2:state:default]"}
-Number living_pressure "Living room [%.1f hPa]" <pressure> (Pressures) {mqtt="<[RPiTV:pressure/living:state:default]"}
+Number bedroom1_pressure "Bedroom 1 [%.1f hPa]" <pressure> (Pressures) {mqtt="<[Broker:pressure/bedroom1:state:default]"}
+Number bedroom2_pressure "Bedroom 2 [%.1f hPa]" <pressure> (Pressures) {mqtt="<[Broker:pressure/bedroom2:state:default]"}
+Number living_pressure "Living room [%.1f hPa]" <pressure> (Pressures) {mqtt="<[Broker:pressure/living:state:default]"}
 
-Switch boiler_onoff "Boiler ON/OFF" <boiler_viessmann> (Boiler) {mqtt=">[RPiTV:boiler/onoff:command:ON:1],>[RPiTV:boiler/onoff:command:OFF:0],<[RPiTV:boiler/onoff:state:MAP(onoff.map)]", autoupdate="false"}
-Number boiler_target_temp "Target temperature [%.1f °C]" <heating> (Boiler) {mqtt=">[RPiTV:boiler/target_temp:command:*:${command}],<[RPiTV:boiler/target_temp:state:default]", autoupdate="false"}
+Switch boiler_onoff "Boiler ON/OFF" <boiler_viessmann> (Boiler) {mqtt=">[Broker:boiler/onoff:command:ON:1],>[Broker:boiler/onoff:command:OFF:0],<[Broker:boiler/onoff:state:MAP(onoff.map)]", autoupdate="false"}
+Number day_target_temp "Target temperature (day) [%.1f °C]" <heating> (Boiler) {mqtt=">[Broker:boiler/day_target_temp:command:*:${command}],<[Broker:boiler/day_target_temp:state:default]", autoupdate="false"}
+Number night_target_temp "Target temperature (night) [%.1f °C]" <heating> (Boiler) {mqtt=">[Broker:boiler/night_target_temp:command:*:${command}],<[Broker:boiler/night_target_temp:state:default]", autoupdate="false"}

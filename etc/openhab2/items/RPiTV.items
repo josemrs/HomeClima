@@ -6,6 +6,3 @@ Number ram_total "Total RAM" <ram> (system) { channel="systeminfo:computer:RPiTV
 Number ram_in_use "RAM in use" <ram> (system) { channel="systeminfo:computer:RPiTV:memory#used" }
 Number available_ram "Available RAM" <ram> (system) { channel="systeminfo:computer:RPiTV:memory#available" }
 Number available_ram_percent "Available RAM" (system) { channel="systeminfo:computer:RPiTV:memory#availablePercent" }
-
-String kodi_title "Now playing" <television> (system) {channel="kodi:kodi:b1e100ea-ecc8-d83e-83ec-0a02e3ef6ed2:showtitle"}
-
