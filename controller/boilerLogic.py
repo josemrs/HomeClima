@@ -13,6 +13,9 @@ BOILER_ON_OFF_TOPIC = 'boiler/onoff'
 DAY_SENSOR_TOPIC = 'temperature/living'
 NIGHT_SENSOR_TOPIC = 'temperature/bedroom2'
 
+DEFAULT_DAY_TARGET = 20
+DEFAULT_NIGHT_TARGET = 19.5
+
 SUBSCRIBE_MQTT_TOPICS = [DAY_SENSOR_TOPIC, NIGHT_SENSOR_TOPIC, DAY_TARGET_TEMP_TOPIC, NIGHT_TARGET_TEMP_TOPIC]
 
 DAY_START_HOUR = 8
@@ -37,13 +40,13 @@ def boilerLogic(min, current, max):
         Calculate and publish to BOILER_ON_OFF_TOPIC the required action based on min, max and current temperature.
     """
     if current <= min:
-        print "The temperature is too low (current:%.1f <= min:%.1f)" % (current, min)
+        #print "The temperature is too low (current:%.1f <= min:%.1f)" % (current, min)
         current_action = TURN_ON
     elif current >= max:
-        print "The temperature is too high (current:%.1f >= max:%.1f)" % (current, max)
+        #print "The temperature is too high (current:%.1f >= max:%.1f)" % (current, max)
         current_action = TURN_OFF
     else:
-        print "The temperature is right (min:%.1f < current:%.1f < max:%.1f)" % (min, current, max)
+        #print "The temperature is right (min:%.1f < current:%.1f < max:%.1f)" % (min, current, max)
         current_action = NO_ACTION
 
     # Avoid duplicated announces for the same action
@@ -52,10 +55,11 @@ def boilerLogic(min, current, max):
         return current_action
 
     if current_action == TURN_OFF or current_action == TURN_ON:
-        print "Turning the boiler %d" % current_action
-        client.publish(BOILER_ON_OFF_TOPIC, payload=current_action, qos=2, retain=True)
+        #print "Turning the boiler %d" % current_action
+        client.publish(BOILER_ON_OFF_TOPIC, payload=current_action, retain=True)
     else:
-        print "No boiler action"
+        #print "No boiler action"
+        pass
 
     last_action = current_action
     return current_action
@@ -65,7 +69,7 @@ def on_connect(client, userdata, flags, rc):
     """
         The callback for when the client receives a CONNACK response from the server.
     """
-    print "Connected with result code %s" % str(rc)
+    #print "Connected with result code %s" % str(rc)
 
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
@@ -84,42 +88,46 @@ def on_message(client, userdata, msg):
 
     if msg.topic == DAY_TARGET_TEMP_TOPIC:
         day_target_temp = float(msg.payload)
-        print "Target temperature set to: %.1f °C" % day_target_temp
+        #print "Target temperature set to: %.1f °C" % day_target_temp
 
     elif msg.topic == NIGHT_TARGET_TEMP_TOPIC:
         night_target_temp = float(msg.payload)
-        print "Target temperature set to: %.1f °C" % night_target_temp
+        #print "Target temperature set to: %.1f °C" % night_target_temp
 
     elif msg.topic == DAY_SENSOR_TOPIC:
         day_sensor_temp = float(msg.payload)
-        print "Day sensor temperature updated: %.1f °C" % day_sensor_temp
+        #print "Day sensor temperature updated: %.1f °C" % day_sensor_temp
 
     elif msg.topic == NIGHT_SENSOR_TOPIC:
         night_sensor_temp = float(msg.payload)
-        print "Night sensor temperature updated: %.1f °C" % night_sensor_temp
+        #print "Night sensor temperature updated: %.1f °C" % night_sensor_temp
 
     now = datetime.now()
     todayDay = now.replace(hour=DAY_START_HOUR, minute=0, second=0, microsecond=0)
     todayNight = now.replace(hour=NIGHT_START_HOUR, minute=0, second=0, microsecond=0)
 
     if now > todayDay and now < todayNight:
+        if not day_target_temp:
+            day_target_temp = DEFAULT_DAY_TARGET
+            print "No day target temperature set, defaulting to %f" % day_target_temp
+            client.publish(DAY_TARGET_TEMP_TOPIC, payload=day_target_temp, retain=True)
         if not day_sensor_temp:
             print "No day temperature read"
             return
-        if not day_target_temp:
-            print "No day target temperature set"
-            return
+
         min_temp = day_target_temp - HYSTERESIS
         max_temp = day_target_temp + HYSTERESIS
         sensor_temp = day_sensor_temp
 
     else:
+        if not night_target_temp:
+            night_target_temp = DEFAULT_NIGHT_TARGET
+            print "No night target temperature set, defaulting to %f" % night_target_temp
+            client.publish(NIGHT_TARGET_TEMP_TOPIC, payload=night_target_temp, retain=True)
         if not night_sensor_temp:
             print "No night temperature read"
             return
-        if not night_target_temp:
-            print "No night target temperature set"
-            return
+            
         min_temp = night_target_temp - HYSTERESIS
         max_temp = night_target_temp + HYSTERESIS
         sensor_temp = night_sensor_temp
