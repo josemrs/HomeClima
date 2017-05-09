@@ -24,4 +24,5 @@ Replace the bimetallic thermostat with a few microcontroller based thermostats t
 * etc/openhab2 Contains my personal config (sitemap and items) for OpenHab2 (http://www.openhab.org/)
 * controller Contains the scripts for the controller unit (RPi in my case)
   * boilerLogic.py Subscribe to temperatures and publishes to boiler topic. Implements the logic to turn on/off the boiler depending on temperatures, time and target.
-  * xivelyFeeder.py Handy script to post MQTT topics to Xively (http://personal.xively.com) **OpenHab can do this instead**
+  * xivelyFeeder.py (I'll not do any more work on this, I am not using it any more) Handy script to post MQTT topics to Xively (http://personal.xively.com)
+  * carbonFeeder.py Handy script to post MQTT topics to Carbon for Grafana
